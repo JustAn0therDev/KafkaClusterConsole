@@ -9,6 +9,6 @@ namespace KafkaClusterConsole
         DeliveryResult<string, string> ProducedMessageDeliveryResult { get; set; }
         string TopicName { get; set; }
         KeyValuePair<string, string> KafkaMessage { get; set; }
-        void ProduceMessage(string messageKey, object messageValue);
+        void ProduceMessage(string messageKey, string messageValue);
     }
 }

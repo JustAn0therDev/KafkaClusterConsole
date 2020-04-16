@@ -3,7 +3,7 @@ using System;
 
 namespace KafkaClusterConsole
 {
-    public class Consumer
+    class Consumer
     {
         private readonly ConsumerConfig _config;
         private bool Consuming { get; set; }
@@ -29,6 +29,6 @@ namespace KafkaClusterConsole
         }
 
         public void WriteConsumedMessageOnConsole(string consumedMessage)
-            => Console.WriteLine($"Consumed message '{consumedMessage}' from {TopicName}");
+            => Console.WriteLine($"Consumed message '{consumedMessage}' from '{TopicName}'");
     }
 }

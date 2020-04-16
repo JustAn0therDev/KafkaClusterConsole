@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 namespace KafkaClusterConsole
 {
-    public class Producer : IKafkaProducer
+    class GeneralProducer : IKafkaProducer
     {
         public ProducerConfig Config { get; set; }
         public DeliveryResult<string, string> ProducedMessageDeliveryResult { get; set; }
         public string TopicName { get; set; }
         public KeyValuePair<string, string> KafkaMessage { get; set; }
 
-        public Producer(ProducerConfig config, string topicName)
+        public GeneralProducer(ProducerConfig config, string topicName)
         {
             Config = config;
             TopicName = topicName;
         }
 
-        public void ProduceMessage(string messageKey, object messageValue)
+        public void ProduceMessage(string messageKey, string messageValue)
         {
             try
             {
@@ -30,8 +30,9 @@ namespace KafkaClusterConsole
             }
         }
 
-        public void CreateMessageToProduce(string messageKey, object messageValue)
-            => KafkaMessage = new KeyValuePair<string, string>(messageKey, messageValue.ToString());
+        public void CreateMessageToProduce(string messageKey, string messageValue) {
+            KafkaMessage = new KeyValuePair<string, string>(messageKey, messageValue);
+        }
 
         public void SendProducedMessageToTopic()
         {
@@ -39,11 +40,9 @@ namespace KafkaClusterConsole
             producer.Produce(TopicName, new Message<string, string>
             {
                 Key = KafkaMessage.Key,
-                Value = KafkaMessage.Value
-            }, (DeliveryReport<string, string> deliveryReport) => LogProducedMessage(deliveryReport));
+                Value = KafkaMessage.Value.ToString()
+            });
+            Console.WriteLine($"Produced message...");
         }
-
-        private void LogProducedMessage(DeliveryReport<string, string> deliveryReport) 
-            => Console.WriteLine($"Produced message. Delivery report: {deliveryReport.Key} {deliveryReport.Value}");
     }
 }

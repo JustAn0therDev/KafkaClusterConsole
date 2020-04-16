@@ -5,36 +5,36 @@ namespace KafkaClusterConsole
 {
     class Program
     {
-        static void Main()
-        {
-            InitializeKafkaProducerAndConsumer();
-        }
+        static void Main() => InitializeKafkaProducerAndConsumer();
 
         static void InitializeKafkaProducerAndConsumer()
         {
+            InitializeGeneralProducer();
+            InitializeConsumer();
+        }
 
+        static void InitializeGeneralProducer() {
             ProducerConfig producerConfig = new ProducerConfig
             {
-                BootstrapServers = "localhost:5357",
+                BootstrapServers = "localhost:135",
                 ClientId = Dns.GetHostName(),
-                ReceiveMessageMaxBytes = int.MaxValue
             };
 
-            IKafkaProducer producer = new Producer(producerConfig, ".NET Core topic");
+            IKafkaProducer producer = new GeneralProducer(producerConfig, ".NET Core topic");
 
             producer.ProduceMessage("Message", "Hello");
+        }
 
+        static void InitializeConsumer() {
             ConsumerConfig consumerConfig = new ConsumerConfig
             {
-                BootstrapServers = "localhost:5357",
-                GroupId = Dns.GetHostName(),
-                ReceiveMessageMaxBytes = int.MaxValue,
+                BootstrapServers = "localhost:135",
+                GroupId = Dns.GetHostName()
             };
 
             Consumer consumer = new Consumer(consumerConfig, ".NET Core topic");
 
             consumer.ConsumeTopic();
-
         }
     }
 }
