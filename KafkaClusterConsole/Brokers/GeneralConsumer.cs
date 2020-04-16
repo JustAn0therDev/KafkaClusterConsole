@@ -19,6 +19,16 @@ namespace KafkaClusterConsole.Brokers
 
         public void ConsumeTopic()
         {
+            try {
+                StartConsumingTopic();
+            }
+            catch (Exception ex) {
+                StopConsuming();
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void StartConsumingTopic() {
             using var consumer = new ConsumerBuilder<string, string>(Config).Build();
             consumer.Subscribe(TopicName);
             while (Consuming)
@@ -28,7 +38,6 @@ namespace KafkaClusterConsole.Brokers
             }
             consumer.Close();
         }
-
         private void WriteConsumedMessageOnConsole(string consumedMessage) {
             if (ConsumedMessageIsNull(consumedMessage))
                 Console.WriteLine($"Consumed null message from '{TopicName}'.");
@@ -38,5 +47,8 @@ namespace KafkaClusterConsole.Brokers
             
         private bool ConsumedMessageIsNull(string consumedMessage) 
             => !string.IsNullOrEmpty(consumedMessage) ? false : true;
+
+        private bool StopConsuming() => Consuming = false;
+
     }
 }
