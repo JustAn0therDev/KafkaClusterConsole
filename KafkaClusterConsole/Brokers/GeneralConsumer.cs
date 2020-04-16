@@ -19,36 +19,33 @@ namespace KafkaClusterConsole.Brokers
 
         public void ConsumeTopic()
         {
-            try {
+            try
+            {
                 StartConsumingTopic();
             }
-            catch (Exception ex) {
-                StopConsuming();
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.Message);
             }
         }
 
-        public void StartConsumingTopic() {
+        public void StartConsumingTopic()
+        {
             using var consumer = new ConsumerBuilder<string, string>(Config).Build();
             consumer.Subscribe(TopicName);
-            while (Consuming)
-            {
-                ConsumeResult<string, string> consumeResult = consumer.Consume();
-                WriteConsumedMessageOnConsole(consumeResult.Message.Value);
-            }
+            ConsumeResult<string, string> consumeResult = consumer.Consume();
+            WriteConsumedMessageOnConsole(consumeResult.Message.Value);
             consumer.Close();
         }
-        private void WriteConsumedMessageOnConsole(string consumedMessage) {
+        private void WriteConsumedMessageOnConsole(string consumedMessage)
+        {
             if (ConsumedMessageIsNull(consumedMessage))
                 Console.WriteLine($"Consumed null message from '{TopicName}'.");
-            else 
+            else
                 Console.WriteLine($"Consumed message '{consumedMessage}' from '{TopicName}'");
         }
-            
-        private bool ConsumedMessageIsNull(string consumedMessage) 
+
+        private bool ConsumedMessageIsNull(string consumedMessage)
             => !string.IsNullOrEmpty(consumedMessage) ? false : true;
-
-        private bool StopConsuming() => Consuming = false;
-
     }
 }
