@@ -1,8 +1,9 @@
 ﻿using Confluent.Kafka;
 using System;
 using System.Collections.Generic;
+using KafkaClusterConsole.Interfaces;
 
-namespace KafkaClusterConsole
+namespace KafkaClusterConsole.Brokers
 {
     class GeneralProducer : IKafkaProducer
     {
@@ -30,9 +31,9 @@ namespace KafkaClusterConsole
             }
         }
 
-        public void CreateMessageToProduce(string messageKey, string messageValue) {
-            KafkaMessage = new KeyValuePair<string, string>(messageKey, messageValue);
-        }
+        public void CreateMessageToProduce(string messageKey, string messageValue) 
+           => KafkaMessage = new KeyValuePair<string, string>(messageKey, messageValue);
+        
 
         public void SendProducedMessageToTopic()
         {
@@ -40,9 +41,8 @@ namespace KafkaClusterConsole
             producer.Produce(TopicName, new Message<string, string>
             {
                 Key = KafkaMessage.Key,
-                Value = KafkaMessage.Value.ToString()
+                Value = KafkaMessage.Value
             });
-            Console.WriteLine($"Produced message...");
         }
     }
 }

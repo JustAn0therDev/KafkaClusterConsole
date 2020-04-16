@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
 using System.Collections.Generic;
 
-namespace KafkaClusterConsole
+namespace KafkaClusterConsole.Interfaces
 {
     public interface IKafkaProducer
     {

@@ -1,5 +1,8 @@
-﻿using Confluent.Kafka;
-using System.Net;
+﻿using System.Net;
+using Confluent.Kafka;
+using KafkaClusterConsole.Brokers;
+using KafkaClusterConsole.Interfaces;
+using KafkaClusterConsole.Configs;
 
 namespace KafkaClusterConsole
 {
@@ -14,26 +17,12 @@ namespace KafkaClusterConsole
         }
 
         static void InitializeGeneralProducer() {
-            ProducerConfig producerConfig = new ProducerConfig
-            {
-                BootstrapServers = "localhost:135",
-                ClientId = Dns.GetHostName(),
-            };
-
-            IKafkaProducer producer = new GeneralProducer(producerConfig, ".NET Core topic");
-
+            IKafkaProducer producer = new GeneralProducer(KafkaProducerConfig.Config, ".NET Core topic");
             producer.ProduceMessage("Message", "Hello");
         }
 
         static void InitializeConsumer() {
-            ConsumerConfig consumerConfig = new ConsumerConfig
-            {
-                BootstrapServers = "localhost:135",
-                GroupId = Dns.GetHostName()
-            };
-
-            Consumer consumer = new Consumer(consumerConfig, ".NET Core topic");
-
+            IKafkaConsumer consumer = new GeneralConsumer(KafkaConsumerConfig.Config, ".NET Core topic");
             consumer.ConsumeTopic();
         }
     }
