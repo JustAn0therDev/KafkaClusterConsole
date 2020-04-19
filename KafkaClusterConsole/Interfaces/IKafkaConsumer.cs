@@ -2,7 +2,7 @@ using Confluent.Kafka;
 
 namespace KafkaClusterConsole.Interfaces
 {
-    internal interface IKafkaConsumer
+    public interface IKafkaConsumer
     {
         ConsumerConfig Config { get; set; }
         string TopicName { get; set; }

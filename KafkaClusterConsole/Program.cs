@@ -1,6 +1,4 @@
-﻿using System.Net;
-using Confluent.Kafka;
-using KafkaClusterConsole.Brokers;
+﻿using KafkaClusterConsole.Brokers;
 using KafkaClusterConsole.Interfaces;
 using KafkaClusterConsole.Configs;
 
@@ -13,16 +11,16 @@ namespace KafkaClusterConsole
         static void InitializeKafkaProducerAndConsumer()
         {
             InitializeGeneralProducer();
-            InitializeConsumer();
+            InitializeGeneralConsumer();
         }
 
         static void InitializeGeneralProducer() {
-            IKafkaProducer producer = new GeneralProducer(KafkaProducerConfig.Config, ".NET Core topic");
-            producer.ProduceMessage("Message", "Hello");
+            IKafkaProducer producer = new GeneralProducer(KafkaProducerConfig.Config, "testing");
+            producer.ProduceMessage("Hello");
         }
 
-        static void InitializeConsumer() {
-            IKafkaConsumer consumer = new GeneralConsumer(KafkaConsumerConfig.Config, ".NET Core topic");
+        static void InitializeGeneralConsumer() {
+            IKafkaConsumer consumer = new GeneralConsumer(KafkaConsumerConfig.Config, "testing");
             consumer.ConsumeTopic();
         }
     }

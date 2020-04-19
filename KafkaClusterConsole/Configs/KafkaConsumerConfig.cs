@@ -8,7 +8,7 @@ namespace KafkaClusterConsole.Configs
         public static ConsumerConfig Config {
             get {
                 return new ConsumerConfig {
-                    BootstrapServers = "localhost:6379",
+                    BootstrapServers = "localhost:9092",
                     GroupId = Dns.GetHostName()
                 };
             }

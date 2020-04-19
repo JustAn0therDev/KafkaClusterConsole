@@ -1,6 +1,5 @@
 ﻿using Confluent.Kafka;
 using System;
-using System.Collections.Generic;
 using KafkaClusterConsole.Interfaces;
 
 namespace KafkaClusterConsole.Brokers
@@ -8,9 +7,8 @@ namespace KafkaClusterConsole.Brokers
     class GeneralProducer : IKafkaProducer
     {
         public ProducerConfig Config { get; set; }
-        public DeliveryResult<string, string> ProducedMessageDeliveryResult { get; set; }
         public string TopicName { get; set; }
-        public KeyValuePair<string, string> KafkaMessage { get; set; }
+        public string KafkaMessage { get; set; }
 
         public GeneralProducer(ProducerConfig config, string topicName)
         {
@@ -18,11 +16,11 @@ namespace KafkaClusterConsole.Brokers
             TopicName = topicName;
         }
 
-        public void ProduceMessage(string messageKey, string messageValue)
+        public void ProduceMessage(string messageValue)
         {
             try
             {
-                CreateMessageToProduce(messageKey, messageValue);
+                CreateMessageToProduce(messageValue);
                 SendProducedMessageToTopic();
             }
             catch (Exception ex)
@@ -31,17 +29,15 @@ namespace KafkaClusterConsole.Brokers
             }
         }
 
-        public void CreateMessageToProduce(string messageKey, string messageValue) 
-           => KafkaMessage = new KeyValuePair<string, string>(messageKey, messageValue);
-        
+        public void CreateMessageToProduce(string messageValue) 
+           => KafkaMessage = messageValue;
 
         public void SendProducedMessageToTopic()
         {
-            using var producer = new ProducerBuilder<string, string>(Config).Build();
-            producer.Produce(TopicName, new Message<string, string>
+            using var producer = new ProducerBuilder<Null, string>(Config).Build();
+            producer.Produce(TopicName, new Message<Null, string>
             {
-                Key = KafkaMessage.Key,
-                Value = KafkaMessage.Value
+                Value = KafkaMessage
             });
         }
     }

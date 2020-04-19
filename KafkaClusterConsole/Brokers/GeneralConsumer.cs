@@ -1,5 +1,6 @@
 ﻿using Confluent.Kafka;
 using System;
+using System.Threading.Tasks;
 using KafkaClusterConsole.Interfaces;
 
 namespace KafkaClusterConsole.Brokers
@@ -26,6 +27,7 @@ namespace KafkaClusterConsole.Brokers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                StopConsuming();
             }
         }
 
@@ -33,8 +35,10 @@ namespace KafkaClusterConsole.Brokers
         {
             using var consumer = new ConsumerBuilder<string, string>(Config).Build();
             consumer.Subscribe(TopicName);
-            ConsumeResult<string, string> consumeResult = consumer.Consume();
-            WriteConsumedMessageOnConsole(consumeResult.Message.Value);
+            while(Consuming) {
+                ConsumeResult<string, string> consumeResult = consumer.Consume();
+                WriteConsumedMessageOnConsole(consumeResult.Message.Value);
+            }
             consumer.Close();
         }
         private void WriteConsumedMessageOnConsole(string consumedMessage)
@@ -47,5 +51,7 @@ namespace KafkaClusterConsole.Brokers
 
         private bool ConsumedMessageIsNull(string consumedMessage)
             => !string.IsNullOrEmpty(consumedMessage) ? false : true;
+
+        private void StopConsuming() => Consuming = false;
     }
 }

@@ -8,7 +8,7 @@ namespace KafkaClusterConsole.Configs
         public static ProducerConfig Config {
             get {
                 return new ProducerConfig {
-                    BootstrapServers = "localhost:631",
+                    BootstrapServers = "localhost:9092",
                     ClientId = Dns.GetHostName()
                 };
             }
