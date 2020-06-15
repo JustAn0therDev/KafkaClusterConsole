@@ -1,6 +1,5 @@
-﻿using Confluent.Kafka;
-using System;
-using System.Threading.Tasks;
+﻿using System;
+using Confluent.Kafka;
 using KafkaClusterConsole.Interfaces;
 
 namespace KafkaClusterConsole.Brokers
@@ -8,14 +7,14 @@ namespace KafkaClusterConsole.Brokers
     class GeneralConsumer : IKafkaConsumer
     {
         public ConsumerConfig Config { get; set; }
-        private bool Consuming { get; set; }
+        private bool _consuming { get; set; }
         public string TopicName { get; set; }
 
         public GeneralConsumer(ConsumerConfig config, string queueTopic)
         {
             Config = config;
             TopicName = queueTopic;
-            Consuming = true;
+            _consuming = true;
         }
 
         public void ConsumeTopic()
@@ -35,7 +34,8 @@ namespace KafkaClusterConsole.Brokers
         {
             using var consumer = new ConsumerBuilder<string, string>(Config).Build();
             consumer.Subscribe(TopicName);
-            while(Consuming) {
+            while (_consuming)
+            {
                 ConsumeResult<string, string> consumeResult = consumer.Consume();
                 WriteConsumedMessageOnConsole(consumeResult.Message.Value);
             }
@@ -52,6 +52,6 @@ namespace KafkaClusterConsole.Brokers
         private bool ConsumedMessageIsNull(string consumedMessage)
             => !string.IsNullOrEmpty(consumedMessage) ? false : true;
 
-        private void StopConsuming() => Consuming = false;
+        private void StopConsuming() => _consuming = false;
     }
 }

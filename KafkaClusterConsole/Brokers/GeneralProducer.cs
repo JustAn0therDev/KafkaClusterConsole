@@ -1,5 +1,5 @@
-﻿using Confluent.Kafka;
-using System;
+﻿using System;
+using Confluent.Kafka;
 using KafkaClusterConsole.Interfaces;
 
 namespace KafkaClusterConsole.Brokers
@@ -29,7 +29,7 @@ namespace KafkaClusterConsole.Brokers
             }
         }
 
-        public void CreateMessageToProduce(string messageValue) 
+        public void CreateMessageToProduce(string messageValue)
            => KafkaMessage = messageValue;
 
         public void SendProducedMessageToTopic()

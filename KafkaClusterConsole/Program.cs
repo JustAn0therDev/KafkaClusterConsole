@@ -14,12 +14,14 @@ namespace KafkaClusterConsole
             InitializeGeneralConsumer();
         }
 
-        static void InitializeGeneralProducer() {
+        static void InitializeGeneralProducer()
+        {
             IKafkaProducer producer = new GeneralProducer(KafkaProducerConfig.Config, "testing");
             producer.ProduceMessage("Hello");
         }
 
-        static void InitializeGeneralConsumer() {
+        static void InitializeGeneralConsumer()
+        {
             IKafkaConsumer consumer = new GeneralConsumer(KafkaConsumerConfig.Config, "testing");
             consumer.ConsumeTopic();
         }
